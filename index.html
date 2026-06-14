@@ -1,0 +1,598 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Pyramid Protocol — J.R. Caldera</title>
+<meta name="description" content="Nine books. One buried protocol. The complete conspiracy revealed.">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: Georgia, 'Times New Roman', serif;
+    background: #0e0b06;
+    color: #e8d9b8;
+    line-height: 1.6;
+  }
+
+  a { color: inherit; text-decoration: none; }
+
+  /* ── HERO ── */
+  .hero {
+    text-align: center;
+    padding: 64px 24px 56px;
+    background: #0e0b06;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 50%; transform: translateX(-50%);
+    width: 600px; height: 300px;
+    background: radial-gradient(ellipse at top, rgba(186,117,23,0.18) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  .hero-eyebrow {
+    font-family: 'Helvetica Neue', Arial, sans-serif;
+    font-size: 11px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: #BA7517;
+    margin-bottom: 16px;
+  }
+  .hero h1 {
+    font-size: clamp(28px, 6vw, 48px);
+    font-weight: normal;
+    color: #f5e6c0;
+    letter-spacing: -0.5px;
+    line-height: 1.15;
+    margin-bottom: 10px;
+  }
+  .hero-series {
+    font-family: 'Helvetica Neue', Arial, sans-serif;
+    font-size: 13px;
+    color: #8a7050;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    margin-bottom: 20px;
+  }
+  .hero-tagline {
+    font-size: 17px;
+    font-style: italic;
+    color: #c8a870;
+    margin-bottom: 8px;
+  }
+  .hero-sub {
+    font-family: 'Helvetica Neue', Arial, sans-serif;
+    font-size: 13px;
+    color: #6a5838;
+    margin-bottom: 32px;
+  }
+  .hero-btns {
+    display: flex;
+    gap: 12px;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+  .btn-primary {
+    background: #BA7517;
+    color: #fff8ec;
+    border: none;
+    border-radius: 4px;
+    padding: 12px 26px;
+    font-family: 'Helvetica Neue', Arial, sans-serif;
+    font-size: 13px;
+    font-weight: 500;
+    letter-spacing: 0.5px;
+    cursor: pointer;
+    text-decoration: none;
+    display: inline-block;
+    transition: background 0.2s;
+  }
+  .btn-primary:hover { background: #9a6010; }
+  .btn-ghost {
+    background: transparent;
+    color: #9a8060;
+    border: 1px solid #3a2e1e;
+    border-radius: 4px;
+    padding: 12px 26px;
+    font-family: 'Helvetica Neue', Arial, sans-serif;
+    font-size: 13px;
+    cursor: pointer;
+    text-decoration: none;
+    display: inline-block;
+    transition: border-color 0.2s, color 0.2s;
+  }
+  .btn-ghost:hover { border-color: #BA7517; color: #BA7517; }
+
+  /* ── FREE BANNER ── */
+  .free-banner {
+    background: #0a1a12;
+    border-top: 1px solid #0f2e1e;
+    border-bottom: 1px solid #0f2e1e;
+    padding: 14px 24px;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    justify-content: center;
+    flex-wrap: wrap;
+    text-align: center;
+  }
+  .free-banner-text {
+    font-family: 'Helvetica Neue', Arial, sans-serif;
+    font-size: 13px;
+    color: #5dca9a;
+  }
+  .free-banner-text strong { color: #9fe1cb; }
+  .btn-free {
+    background: #1D9E75;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    padding: 8px 16px;
+    font-family: 'Helvetica Neue', Arial, sans-serif;
+    font-size: 12px;
+    font-weight: 500;
+    cursor: pointer;
+    text-decoration: none;
+    display: inline-block;
+    white-space: nowrap;
+    transition: background 0.2s;
+  }
+  .btn-free:hover { background: #158060; }
+
+  /* ── SECTIONS ── */
+  .section {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 48px 24px 0;
+  }
+  .section-header {
+    display: flex;
+    align-items: baseline;
+    gap: 12px;
+    margin-bottom: 24px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid #2a2010;
+  }
+  .section-title {
+    font-family: 'Helvetica Neue', Arial, sans-serif;
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 2.5px;
+    text-transform: uppercase;
+    color: #BA7517;
+  }
+  .section-subtitle {
+    font-family: 'Helvetica Neue', Arial, sans-serif;
+    font-size: 11px;
+    color: #4a3e28;
+  }
+
+  /* ── BOOKS GRID ── */
+  .books-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 18px;
+  }
+  @media (max-width: 600px) {
+    .books-grid { grid-template-columns: repeat(2, 1fr); gap: 12px; }
+  }
+  .book-card {
+    background: #14100a;
+    border: 1px solid #2a2010;
+    border-radius: 6px;
+    overflow: hidden;
+    display: block;
+    transition: border-color 0.2s, transform 0.15s;
+  }
+  .book-card:hover { border-color: #BA7517; transform: translateY(-2px); }
+  .book-card img {
+    width: 100%;
+    aspect-ratio: 2/3;
+    object-fit: cover;
+    display: block;
+    background: #1e1810;
+  }
+  .book-card-placeholder {
+    width: 100%;
+    aspect-ratio: 2/3;
+    background: #1e1810;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #3a3020;
+    font-size: 32px;
+  }
+  .book-info { padding: 11px 12px 13px; }
+  .book-num {
+    font-family: 'Helvetica Neue', Arial, sans-serif;
+    font-size: 10px;
+    color: #5a4828;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    margin-bottom: 4px;
+  }
+  .book-title {
+    font-size: 14px;
+    font-weight: normal;
+    color: #e0ccaa;
+    line-height: 1.3;
+    margin-bottom: 4px;
+  }
+  .book-tagline {
+    font-family: 'Helvetica Neue', Arial, sans-serif;
+    font-size: 11px;
+    color: #6a5838;
+    line-height: 1.4;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+  .book-price {
+    font-family: 'Helvetica Neue', Arial, sans-serif;
+    font-size: 11px;
+    color: #BA7517;
+    margin-top: 7px;
+  }
+
+  /* ── BOX SETS ── */
+  .boxsets-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 14px;
+  }
+  @media (max-width: 500px) {
+    .boxsets-grid { grid-template-columns: 1fr; }
+  }
+  .boxset-card {
+    background: #14100a;
+    border: 1px solid #2a2010;
+    border-radius: 6px;
+    padding: 14px;
+    display: flex;
+    gap: 13px;
+    transition: border-color 0.2s;
+  }
+  .boxset-card:hover { border-color: #BA7517; }
+  .boxset-card img {
+    width: 58px;
+    min-width: 58px;
+    height: 87px;
+    object-fit: cover;
+    border-radius: 3px;
+    background: #1e1810;
+  }
+  .boxset-info { flex: 1; min-width: 0; }
+  .boxset-badge {
+    display: inline-block;
+    font-family: 'Helvetica Neue', Arial, sans-serif;
+    font-size: 10px;
+    font-weight: 500;
+    background: #2a1e08;
+    color: #BA7517;
+    padding: 2px 8px;
+    border-radius: 3px;
+    margin-bottom: 6px;
+    letter-spacing: 0.5px;
+  }
+  .boxset-title {
+    font-size: 13px;
+    color: #e0ccaa;
+    line-height: 1.3;
+    margin-bottom: 5px;
+  }
+  .boxset-sub {
+    font-family: 'Helvetica Neue', Arial, sans-serif;
+    font-size: 11px;
+    color: #6a5838;
+    line-height: 1.4;
+  }
+
+  /* ── OMNIBUS ── */
+  .omnibus-card {
+    background: #14100a;
+    border: 1px solid #3a2a10;
+    border-radius: 6px;
+    padding: 20px;
+    display: flex;
+    gap: 18px;
+    align-items: center;
+    transition: border-color 0.2s;
+  }
+  .omnibus-card:hover { border-color: #BA7517; }
+  .omnibus-card img {
+    width: 80px;
+    min-width: 80px;
+    height: 120px;
+    object-fit: cover;
+    border-radius: 4px;
+  }
+  .omnibus-badge {
+    display: inline-block;
+    font-family: 'Helvetica Neue', Arial, sans-serif;
+    font-size: 10px;
+    font-weight: 500;
+    background: #BA7517;
+    color: #fff8ec;
+    padding: 3px 10px;
+    border-radius: 3px;
+    margin-bottom: 9px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+  }
+  .omnibus-title {
+    font-size: 18px;
+    color: #f0ddb0;
+    margin-bottom: 6px;
+  }
+  .omnibus-sub {
+    font-family: 'Helvetica Neue', Arial, sans-serif;
+    font-size: 12px;
+    color: #7a6040;
+    line-height: 1.55;
+    margin-bottom: 14px;
+  }
+
+  /* ── AUTHOR ── */
+  .author-card {
+    background: #14100a;
+    border: 1px solid #2a2010;
+    border-radius: 6px;
+    padding: 22px;
+    display: flex;
+    gap: 18px;
+    align-items: flex-start;
+  }
+  .author-avatar {
+    width: 54px;
+    height: 54px;
+    min-width: 54px;
+    border-radius: 50%;
+    background: #2a1e08;
+    border: 1px solid #3a2e18;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Helvetica Neue', Arial, sans-serif;
+    font-size: 16px;
+    font-weight: 500;
+    color: #BA7517;
+  }
+  .author-name {
+    font-size: 17px;
+    color: #f0ddb0;
+    margin-bottom: 3px;
+  }
+  .author-tag {
+    font-family: 'Helvetica Neue', Arial, sans-serif;
+    font-size: 11px;
+    color: #5a4828;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    margin-bottom: 12px;
+  }
+  .author-bio {
+    font-family: 'Helvetica Neue', Arial, sans-serif;
+    font-size: 13px;
+    color: #8a7858;
+    line-height: 1.7;
+  }
+
+  /* ── FOOTER ── */
+  .footer {
+    text-align: center;
+    padding: 48px 24px 40px;
+    margin-top: 56px;
+    border-top: 1px solid #1e1810;
+  }
+  .footer p {
+    font-family: 'Helvetica Neue', Arial, sans-serif;
+    font-size: 11px;
+    color: #3a3020;
+    letter-spacing: 1px;
+  }
+
+  /* spacing after last section */
+  .section:last-of-type { padding-bottom: 0; }
+</style>
+</head>
+<body>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-eyebrow">J. R. Caldera</div>
+  <h1>The Pyramid Protocol</h1>
+  <div class="hero-series">9 books &nbsp;·&nbsp; 3 box sets &nbsp;·&nbsp; 1 protocol</div>
+  <div class="hero-tagline">Ancient secrets. Deadly codes. One protocol that should never be awakened.</div>
+  <div class="hero-sub">Some tombs shouldn't be opened. Some codes shouldn't be run.</div>
+  <div class="hero-btns">
+    <a href="https://payhip.com/b/AbJk1" class="btn-primary" target="_blank">Download Chapter 1 — Free</a>
+    <a href="#series" class="btn-ghost">See all 9 books ↓</a>
+  </div>
+</div>
+
+<!-- FREE BANNER -->
+<div class="free-banner">
+  <div class="free-banner-text">Start with <strong>The Burial Map</strong> — Chapter 1 is free. Full book $4.99 on Payhip.</div>
+  <a href="https://payhip.com/b/AbJk1" class="btn-free" target="_blank">Get free chapter</a>
+</div>
+
+<!-- BOOKS 1–9 -->
+<div class="section" id="series">
+  <div class="section-header">
+    <span class="section-title">The series</span>
+    <span class="section-subtitle">books 1–9</span>
+  </div>
+  <div class="books-grid">
+
+    <a class="book-card" href="https://payhip.com/b/BZFYR" target="_blank">
+      <img src="https://j-r-caldera.carrd.co/assets/images/image01.jpg?v=bbf67090" alt="The Burial Map">
+      <div class="book-info">
+        <div class="book-num">Book 1</div>
+        <div class="book-title">The Burial Map</div>
+        <div class="book-tagline">Beneath the Pyramid where secrets never forget</div>
+        <div class="book-price">$4.99</div>
+      </div>
+    </a>
+
+    <a class="book-card" href="https://payhip.com/b/6irfh" target="_blank">
+      <img src="https://j-r-caldera.carrd.co/assets/images/image02.jpg?v=bbf67090" alt="The Black Chamber">
+      <div class="book-info">
+        <div class="book-num">Book 2</div>
+        <div class="book-title">The Black Chamber</div>
+        <div class="book-tagline">A secret older than history — a mechanism that controls minds</div>
+        <div class="book-price">$4.99</div>
+      </div>
+    </a>
+
+    <a class="book-card" href="https://payhip.com/b/AXHsN" target="_blank">
+      <img src="https://j-r-caldera.carrd.co/assets/images/image03.jpg?v=bbf67090" alt="The Resonance Code">
+      <div class="book-info">
+        <div class="book-num">Book 3</div>
+        <div class="book-title">The Resonance Code</div>
+        <div class="book-tagline">Unlock the sound that controls the mind</div>
+        <div class="book-price">$4.99</div>
+      </div>
+    </a>
+
+    <a class="book-card" href="https://payhip.com/b/c6tMG" target="_blank">
+      <img src="https://j-r-caldera.carrd.co/assets/images/image05.jpg?v=bbf67090" alt="The Pharaoh Algorithm">
+      <div class="book-info">
+        <div class="book-num">Book 4</div>
+        <div class="book-title">The Pharaoh Algorithm</div>
+        <div class="book-tagline">An archaeological thriller beneath the pyramids</div>
+        <div class="book-price">$4.99</div>
+      </div>
+    </a>
+
+    <a class="book-card" href="https://payhip.com/b/ZX0zi" target="_blank">
+      <img src="The_Hidden_Dynasty.png" alt="The Hidden Dynasty">
+      <div class="book-info">
+        <div class="book-num">Book 5</div>
+        <div class="book-title">The Hidden Dynasty</div>
+        <div class="book-tagline">A dynasty hidden, a civilization controlled</div>
+        <div class="book-price">$4.99</div>
+      </div>
+    </a>
+
+    <a class="book-card" href="https://payhip.com/b/noazR" target="_blank">
+      <img src="https://j-r-caldera.carrd.co/assets/images/image07.jpg?v=bbf67090" alt="The Stone Pulse">
+      <div class="book-info">
+        <div class="book-num">Book 6</div>
+        <div class="book-title">The Stone Pulse</div>
+        <div class="book-tagline">Beneath the pyramids, the earth awakens</div>
+        <div class="book-price">$4.99</div>
+      </div>
+    </a>
+
+    <a class="book-card" href="https://payhip.com/b/b9Xug" target="_blank">
+      <img src="https://j-r-caldera.carrd.co/assets/images/image09.jpg?v=bbf67090" alt="The Cartouche Lie">
+      <div class="book-info">
+        <div class="book-num">Book 7</div>
+        <div class="book-title">The Cartouche Lie</div>
+        <div class="book-tagline">When the names of kings are lies, who really rules history?</div>
+        <div class="book-price">$4.99</div>
+      </div>
+    </a>
+
+    <a class="book-card" href="https://payhip.com/b/W3aA7" target="_blank">
+      <img src="https://j-r-caldera.carrd.co/assets/images/image10.jpg?v=bbf67090" alt="The Pyramid Lock">
+      <div class="book-info">
+        <div class="book-num">Book 8</div>
+        <div class="book-title">The Pyramid Lock</div>
+        <div class="book-tagline">Unlocking the past comes at the cost of the future</div>
+        <div class="book-price">$4.99</div>
+      </div>
+    </a>
+
+    <a class="book-card" href="https://payhip.com/b/DHOQh" target="_blank">
+      <img src="https://j-r-caldera.carrd.co/assets/images/image11.jpg?v=bbf67090" alt="The Last Alignment">
+      <div class="book-info">
+        <div class="book-num">Book 9</div>
+        <div class="book-title">The Last Alignment</div>
+        <div class="book-tagline">The final alignment. One choice. Humanity's fate.</div>
+        <div class="book-price">$4.99</div>
+      </div>
+    </a>
+
+  </div>
+</div>
+
+<!-- BOX SETS -->
+<div class="section">
+  <div class="section-header">
+    <span class="section-title">Box sets</span>
+    <span class="section-subtitle">three books in one</span>
+  </div>
+  <div class="boxsets-grid">
+
+    <a class="boxset-card" href="https://payhip.com/b/6KUzX" target="_blank">
+      <img src="https://j-r-caldera.carrd.co/assets/images/image04.jpg?v=bbf67090" alt="Box Set 1–3">
+      <div class="boxset-info">
+        <div class="boxset-badge">Books 1–3</div>
+        <div class="boxset-title">The Burial Map Box Set</div>
+        <div class="boxset-sub">Three books. One buried truth. The protocol that was never meant to be found.</div>
+      </div>
+    </a>
+
+    <a class="boxset-card" href="https://payhip.com/b/sQX5T" target="_blank">
+      <img src="https://j-r-caldera.carrd.co/assets/images/image08.jpg?v=bbf67090" alt="Box Set 4–6">
+      <div class="boxset-info">
+        <div class="boxset-badge">Books 4–6</div>
+        <div class="boxset-title">The Pharaoh Algorithm Box Set</div>
+        <div class="boxset-sub">Three protocols. One awakening. The system has chosen humanity again.</div>
+      </div>
+    </a>
+
+    <a class="boxset-card" href="https://payhip.com/b/WlR8a" target="_blank">
+      <img src="https://j-r-caldera.carrd.co/assets/images/image12.jpg?v=bbf67090" alt="Box Set 7–9">
+      <div class="boxset-info">
+        <div class="boxset-badge">Books 7–9</div>
+        <div class="boxset-title">The Cartouche Lie Box Set</div>
+        <div class="boxset-sub">The truth beneath the pyramids was never meant to be read.</div>
+      </div>
+    </a>
+
+    <a class="boxset-card" href="https://payhip.com/b/9UcTv" target="_blank" style="border-color:#3a2a10;">
+      <img src="https://j-r-caldera.carrd.co/assets/images/image13.jpg?v=bbf67090" alt="Omnibus">
+      <div class="boxset-info">
+        <div class="boxset-badge" style="background:#BA7517;color:#fff8ec;">All 9 books</div>
+        <div class="boxset-title">The Burial Map Omnibus</div>
+        <div class="boxset-sub">Nine books. One buried protocol. The complete conspiracy revealed.</div>
+      </div>
+    </a>
+
+  </div>
+</div>
+
+<!-- ABOUT -->
+<div class="section">
+  <div class="section-header">
+    <span class="section-title">About the author</span>
+  </div>
+  <div class="author-card">
+    <div class="author-avatar">JR</div>
+    <div>
+      <div class="author-name">J. R. Caldera</div>
+      <div class="author-tag">Archaeological thriller author</div>
+      <div class="author-bio">
+        J.R. Caldera is a storyteller with a deep passion for ancient civilizations, forgotten knowledge, and the thrilling question of what happens when the past refuses to stay buried.<br><br>
+        With a lifelong fascination for archaeology, hidden histories, and the shadowy lines where myth meets reality, he crafts fast-paced adventures filled with intelligent heroes, dangerous secrets, and twists that keep readers turning pages late into the night.<br><br>
+        <em>The Pyramid Protocol</em> series is his heartfelt invitation to anyone who has ever looked at the pyramids and wondered: <strong style="color:#c8a870;">What if there's more?</strong> Writing these books has been a joyful journey of research, imagination, and pure excitement — and he hopes you'll feel that same sense of wonder while reading them.<br><br>
+        When he's not writing, J.R. enjoys exploring old maps, learning about lost technologies, and imagining what secrets our ancestors might still be trying to tell us. He loves connecting with readers and always appreciates hearing which book or twist you enjoyed most.<br><br>
+        <a href="mailto:calderajunorex@gmail.com" style="color:#BA7517;">calderajunorex@gmail.com</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<div class="footer">
+  <p>© J. R. Caldera &nbsp;·&nbsp; The Pyramid Protocol Series</p>
+</div>
+
+</body>
+</html>
